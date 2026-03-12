@@ -1,25 +1,32 @@
 -- ==========================================  
--- CORRZEY HUB - FINAL REBORN V58.6
--- CLEANED FOR OBFUSCATION
--- ==========================================  
+-- V58.6 FINAL REBORN - RGB CORRZEY HUB EDITION
+-- INTEGRATED WITH GITHUB CLOUD KEY SYSTEM
+-- ========================================== 
 
-local KeyURL = "https://raw.githubusercontent.com/coorzey/Key/refs/heads/main/Key" 
-local GetKeyLink = "LINK_DISCORD_KAMU" 
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local LP = Players.LocalPlayer
+local PlayerGui = LP:WaitForChild("PlayerGui")
 
--- [ 1. CLOUD KEY LOGIC ]
+-- [[ KONFIGURASI CLOUD ]]
+local KEY_URL = "https://raw.githubusercontent.com/coorzey/Key/refs/heads/main/Key" 
+local DISCORD_LINK = "https://discord.gg/corrzeyhub" 
+
+-- Fungsi mengambil Key dari GitHub
 local function GetCloudKey()
     local success, result = pcall(function()
-        return game:HttpGet(KeyURL)
+        return game:HttpGet(KEY_URL)
     end)
     if success then
-        return result:gsub("%s+", "") 
+        return result:gsub("%s+", "") -- Membersihkan spasi/baris baru
     else
         return "ERROR_CONNECTION"
     end
 end
 
--- [ 2. MAIN SCRIPT FUNCTION ]
-local function MainScript()
+-- [[ FUNGSI UTAMA (SOURCE CODE ASLI) ]]
+local function ExecuteMainScript()
+    -- START OF ORIGINAL SOURCE CODE --
     local Players = game:GetService("Players")   
     local LP = Players.LocalPlayer   
     local Workspace = game:GetService("Workspace")   
@@ -44,12 +51,9 @@ local function MainScript()
     end)
 
     -- [REPLACED] SUPER ANTI-AFK
-    local function DisableAFK()
-        for _, v in pairs(getconnections(LP.Idled)) do
-            v:Disable()
-        end
+    for _, v in pairs(getconnections(LP.Idled)) do
+        v:Disable()
     end
-    pcall(DisableAFK)
 
     task.spawn(function()
         while task.wait(20) do
@@ -67,7 +71,7 @@ local function MainScript()
     local moneyBeforeRace = 0
     local running, isMinimized = false, false
 
-    -- FUNGSI SUPER LOW GRAPHIC
+    -- FUNGSI SUPER LOW GRAPHIC + PURGE
     local function applyDeepClean()
         pcall(function()
             settings().Rendering.QualityLevel = 1
@@ -104,12 +108,18 @@ local function MainScript()
                         if btn:IsA("ImageButton") or btn:IsA("TextButton") then
                             local n = btn.Name:lower()
                             local t = (btn:IsA("TextButton") and btn.Text:lower()) or ""
+                            
                             if n == "x" or n:find("close") or t == "x" or t:find("close") or n:find("exit") then
                                 if btn.Visible and btn.AbsoluteSize.X > 0 then
                                     local pos = btn.AbsolutePosition
                                     local size = btn.AbsoluteSize
                                     VirtualUser:ClickButton1(Vector2.new(pos.X + (size.X/2), pos.Y + (size.Y/2) + 45))
-                                    for _, conn in pairs(getconnections(btn.MouseButton1Click)) do conn:Fire() end
+                                    
+                                    pcall(function()
+                                        for _, conn in pairs(getconnections(btn.MouseButton1Click)) do conn:Fire() end
+                                        for _, conn in pairs(getconnections(btn.MouseButton1Down)) do conn:Fire() end
+                                        for _, conn in pairs(getconnections(btn.Activated)) do conn:Fire() end
+                                    end)
                                 end
                             end
                         end
@@ -128,7 +138,7 @@ local function MainScript()
         return 0   
     end   
 
-    -- PATH COORDINATES
+    -- KOORDINAT (PATH 1-41)
     local startPos = Vector3.new(3259.74, -15.28, 1014.49)   
     local startRot = -95.3   
     local path = {   
@@ -156,8 +166,8 @@ local function MainScript()
         {pos = {-16519.88, 10.92, 12115.18}, rot = 169.55}   
     }
 
-    -- UI SYSTEM
-    if PlayerGui:FindFirstChild("DeltaAutoFarm") then PlayerGui.DeltaAutoFarm:Destroy() end   
+    -- [[ UI SYSTEM - PERFECTED & NEON HYBRID ]]
+    if PlayerGui:FindFirstChild("DeltaAutoFarm") then PlayerGui.DeltaAutoFarm:Destroy() end    
     local sg = Instance.new("ScreenGui", PlayerGui); sg.Name = "DeltaAutoFarm"; sg.ResetOnSpawn = false
 
     local clr_bg = Color3.fromRGB(18, 18, 18)
@@ -165,13 +175,20 @@ local function MainScript()
     local clr_accent = Color3.fromRGB(255, 215, 0)
     local clr_btn_off = Color3.fromRGB(35, 35, 35)
 
+    local clr_neon_bg = Color3.fromRGB(10, 10, 10)
+    local clr_neon_stroke = Color3.fromRGB(0, 255, 255)
+    local clr_neon_glow = Color3.fromRGB(0, 180, 180)
+
     local frame = Instance.new("Frame", sg)   
-    frame.Size = UDim2.new(0, 240, 0, 155); frame.Position = UDim2.new(0.5, -120, 0.4, 0); frame.BackgroundColor3 = clr_bg; frame.Active = true; frame.Draggable = true; frame.BorderSizePixel = 0
+    frame.Size = UDim2.new(0, 240, 0, 155); frame.Position = UDim2.new(0.5, -120, 0.4, 0); frame.BackgroundColor3 = clr_bg; frame.Active = true; frame.Draggable = true; frame.BorderSizePixel = 0; frame.ClipsDescendants = true
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
     local mainStroke = Instance.new("UIStroke", frame); mainStroke.Color = clr_stroke; mainStroke.Thickness = 1.8; mainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
     local header = Instance.new("Frame", frame); header.Size = UDim2.new(1, 0, 0, 35); header.BackgroundTransparency = 1
     local status = Instance.new("TextLabel", header); status.Size = UDim2.new(0.5, 0, 1, 0); status.Position = UDim2.new(0, 12, 0, 0); status.Text = "● READY"; status.TextColor3 = Color3.fromRGB(0, 255, 150); status.BackgroundTransparency = 1; status.Font = Enum.Font.GothamBold; status.TextSize = 11; status.TextXAlignment = Enum.TextXAlignment.Left
+
+    local rgbLabel = Instance.new("TextLabel", header); rgbLabel.Size = UDim2.new(0, 80, 1, 0); rgbLabel.Position = UDim2.new(1, -115, 0, 0); rgbLabel.Text = "CORRZEY HUB"; rgbLabel.BackgroundTransparency = 1; rgbLabel.Font = Enum.Font.GothamBold; rgbLabel.TextSize = 10; rgbLabel.TextXAlignment = Enum.TextXAlignment.Right
+    task.spawn(function() while true do for i = 0, 1, 0.01 do rgbLabel.TextColor3 = Color3.fromHSV(i, 1, 1) task.wait(0.03) end end end)
 
     local toggleBtn = Instance.new("TextButton", header); toggleBtn.Size = UDim2.new(0, 24, 0, 24); toggleBtn.Position = UDim2.new(1, -30, 0, 5); toggleBtn.Text = "−"; toggleBtn.TextColor3 = Color3.new(1,1,1); toggleBtn.Font = Enum.Font.GothamBold; toggleBtn.BackgroundColor3 = Color3.fromRGB(30,30,30); Instance.new("UICorner", toggleBtn)
 
@@ -185,19 +202,96 @@ local function MainScript()
     end
 
     local farmBtn = createBtn("START FARMING", clr_btn_off, content)
-    local cpuBtn = createBtn("RENDER: ON", clr_btn_off, content)
+    local purgeBtn = createBtn("PURGE ASSETS (LAG FIX)", clr_btn_off, content)
+    local cpuBtn = createBtn("NEON DARK: OFF", clr_btn_off, content)
     local dtStatusLabel = Instance.new("TextLabel", content); dtStatusLabel.Size = UDim2.new(1, 0, 0, 20); dtStatusLabel.Text = "DELAY: 0s"; dtStatusLabel.TextColor3 = Color3.new(0.6,0.6,0.6); dtStatusLabel.BackgroundTransparency = 1; dtStatusLabel.Font = Enum.Font.GothamBold; dtStatusLabel.TextSize = 10
 
-    local moneyLabel = Instance.new("TextLabel", frame); moneyLabel.Size = UDim2.new(1, -20, 0, 20); moneyLabel.Position = UDim2.new(0, 10, 1, -25); moneyLabel.Text = "Profit: $0"; moneyLabel.TextColor3 = clr_accent; moneyLabel.BackgroundTransparency = 1; moneyLabel.Font = Enum.Font.GothamBold; moneyLabel.TextSize = 10
+    -- MINI HUD
+    local miniHud = Instance.new("Frame", sg); miniHud.Size = UDim2.new(0, 130, 0, 65); miniHud.Position = UDim2.new(0, 10, 0.02, 0); miniHud.BackgroundColor3 = Color3.fromRGB(10,10,10); miniHud.Draggable = true; miniHud.Active = true; Instance.new("UICorner", miniHud)
+    local hs = Instance.new("UIStroke", miniHud); hs.Color = clr_accent; hs.Thickness = 1.2
+    local hGlow = Instance.new("UIStroke", miniHud); hGlow.Color = clr_neon_glow; hGlow.Thickness = 3; hGlow.Transparency = 1; hGlow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+    local function createHudLbl(txt, col, pos)
+        local l = Instance.new("TextLabel", miniHud); l.Size = UDim2.new(1, -20, 0, 20); l.Position = UDim2.new(0, 10, 0, pos); l.Text = txt; l.TextColor3 = col; l.Font = Enum.Font.GothamBold; l.TextSize = 10; l.BackgroundTransparency = 1; l.TextXAlignment = "Left"; return l
+    end
+    local moneyLabel = createHudLbl("Profit: $0", clr_accent, 5)
+    local raceLabel = createHudLbl("Races: 0", Color3.new(1,1,1), 23)
+    local fpsLabel = createHudLbl("FPS: 0", Color3.fromRGB(0, 255, 255), 41)
+
+    -- SAKELAR TEMA
+    local function setNeonTheme(active)
+        if active then
+            frame.BackgroundColor3 = clr_neon_bg
+            mainStroke.Color = clr_neon_stroke
+            cpuBtn.BackgroundColor3 = clr_neon_stroke
+            cpuBtn.TextColor3 = clr_neon_bg
+            cpuBtn.Text = "NEON DARK: ON (3D OFF)"
+            hs.Color = clr_neon_glow
+            hGlow.Transparency = 0.5
+            toggleBtn.BackgroundColor3 = clr_neon_glow
+        else
+            frame.BackgroundColor3 = clr_bg
+            mainStroke.Color = clr_stroke
+            cpuBtn.BackgroundColor3 = clr_btn_off
+            cpuBtn.TextColor3 = Color3.new(1,1,1)
+            cpuBtn.Text = "NEON DARK: OFF (3D ON)"
+            hs.Color = clr_accent
+            hGlow.Transparency = 1
+            toggleBtn.BackgroundColor3 = Color3.fromRGB(30,30,30)
+        end
+    end
+
+    -- [[ UPDATED TRANSITION LOGIC ]]
+    toggleBtn.MouseButton1Click:Connect(function()   
+        isMinimized = not isMinimized
+        
+        if isMinimized then
+            task.delay(0.05, function() content.Visible = false end)
+            frame:TweenSize(UDim2.new(0, 240, 0, 35), "Out", "Quad", 0.3, true)
+            toggleBtn.Text = "+"
+        else
+            frame:TweenSize(UDim2.new(0, 240, 0, 155), "Out", "Quad", 0.3, true)
+            task.wait(0.25)
+            content.Visible = true
+            toggleBtn.Text = "−"
+        end
+    end)
 
     cpuBtn.MouseButton1Click:Connect(function()
         renderingEnabled = not renderingEnabled
         toggle3DRender(renderingEnabled)
-        cpuBtn.Text = renderingEnabled and "RENDER: ON" or "RENDER: OFF"
+        setNeonTheme(not renderingEnabled)
+    end)
+
+    purgeBtn.MouseButton1Click:Connect(function()
+        applyDeepClean()
+        local oldText = status.Text
+        status.Text = "● ASSETS PURGED!"
+        task.wait(1)
+        status.Text = oldText
+    end)
+
+    task.spawn(function()
+        local lastUpdate = tick()
+        local frames = 0
+        RunService.RenderStepped:Connect(function()
+            frames = frames + 1
+            if tick() - lastUpdate >= 1 then
+                fpsLabel.Text = "FPS: " .. frames
+                frames = 0
+                lastUpdate = tick()
+            end
+        end)
     end)
 
     farmBtn.MouseButton1Click:Connect(function()
         running = not running
+        if running then 
+            applyDeepClean() 
+            if setfpscap then setfpscap(30) end
+        else
+            if setfpscap then setfpscap(60) end
+        end
         farmBtn.Text = running and "STOP FARM" or "START FARMING"
         farmBtn.BackgroundColor3 = running and Color3.fromRGB(180, 0, 0) or Color3.fromRGB(0, 120, 255)
     end)
@@ -210,62 +304,191 @@ local function MainScript()
                 local hum = LP.Character and LP.Character:FindFirstChildOfClass("Humanoid")
                 local seat = hum and hum.SeatPart
                 if seat and seat:IsA("VehicleSeat") then
-                    local car = seat.Parent
-                    while car and not car:IsA("Model") do car = car.Parent end
+                    local car = seat.Parent; while car and not car:IsA("Model") do car = car.Parent end
                     
+                    applyDeepClean()
+                    closePrizePopup()
+                    seat.AssemblyLinearVelocity = Vector3.new(0,0,0)
+                    seat.AssemblyAngularVelocity = Vector3.new(0,0,0)
                     car:PivotTo(CFrame.new(startPos + Vector3.new(0,5,0)) * CFrame.Angles(0, math.rad(startRot), 0))
+                    
                     status.Text = "● WAITING RIVAL..."
                     
                     local rivalFound = false
                     repeat 
                         task.wait(1) 
+                        if seat then seat.AssemblyLinearVelocity = Vector3.new(0,0,0) end
                         for _, p in pairs(Players:GetPlayers()) do 
                             if p ~= LP and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-                                if (p.Character.HumanoidRootPart.Position - startPos).Magnitude < 30 then 
+                                local rivalHum = p.Character:FindFirstChildOfClass("Humanoid")
+                                if (p.Character.HumanoidRootPart.Position - startPos).Magnitude < 20 and (rivalHum and rivalHum.SeatPart and rivalHum.SeatPart:IsA("VehicleSeat")) then 
                                     rivalFound = true 
                                 end 
                             end
                         end
                     until not running or rivalFound
-
+                    
                     if running and rivalFound then
                         moneyBeforeRace = getPlayerMoney()
                         for i = 18, 1, -1 do 
-                            if not running then break end
-                            status.Text = "● START IN: "..i.."s"
+                            if not running then break end; 
+                            status.Text = "● START IN: "..i.."s"; 
+                            if seat then 
+                                seat.AssemblyLinearVelocity = Vector3.new(0,0,0) 
+                                seat.AssemblyAngularVelocity = Vector3.new(0,0,0)
+                            end
                             task.wait(1) 
                         end
+                        
                         if running then
                             for i, d in ipairs(path) do
                                 if not running or not seat.Parent then break end
                                 local dtVal = math.random(15, 20) / 10
                                 status.Text = "● RACING: " .. i .. "/41"
                                 dtStatusLabel.Text = "DELAY: " .. dtVal .. "s"
-                                
+                                applyDeepClean() 
                                 local cf = CFrame.new(d.pos[1], d.pos[2]+5, d.pos[3]) * CFrame.Angles(0, math.rad(d.rot), 0)
+                                seat.AssemblyLinearVelocity = Vector3.new(0,0,0)
+                                seat.AssemblyAngularVelocity = Vector3.new(0,0,0)
                                 car:PivotTo(cf)
+                                task.wait(0.05) 
+                                seat.AssemblyLinearVelocity = cf.LookVector * 165
+                                seat.AssemblyAngularVelocity = Vector3.new(0,0,0)
                                 task.wait(dtVal) 
                             end
-                            totalMoneyEarned = totalMoneyEarned + (getPlayerMoney() - moneyBeforeRace)
-                            moneyLabel.Text = "Profit: $" .. totalMoneyEarned
-                            status.Text = "● FINISHED"
+                            status.Text = "● FINISHING..."
+                            dtStatusLabel.Text = "DELAY: 0s"
+                            task.spawn(function()
+                                for _ = 1, 15 do 
+                                    closePrizePopup()
+                                    task.wait(0.3)
+                                end
+                            end)
+                            task.wait(2)
+                            local gain = getPlayerMoney() - moneyBeforeRace
+                            if gain > 0 then 
+                                totalMoneyEarned = totalMoneyEarned + gain; sessionRaces = sessionRaces + 1
+                                moneyLabel.Text = "Profit: $" .. totalMoneyEarned; raceLabel.Text = "Races: " .. sessionRaces
+                            end
+                            status.Text = "● LOOP RESTARTING..."
                             task.wait(2)
                         end
                     end
-                else 
-                    status.Text = "● SIT IN CAR!" 
-                end
+                else status.Text = "● SIT IN CAR!" end
             end
         end
     end)
-end -- Penutup MainScript
 
--- [ 3. EXECUTION LOGIC ]
-local CloudKey = GetCloudKey()
--- Catatan: Ganti "YOUR_KEY_HERE" dengan key yang ada di Raw GitHub kamu
-if CloudKey == "YOUR_KEY_HERE" or CloudKey == "FREE" then
-    MainScript()
-else
-    print("Invalid Key!")
-    -- game.Players.LocalPlayer:Kick("Invalid Key! Get key here: " .. GetKeyLink)
+    -- WEBHOOK SYSTEM
+    local MAIN_WEBHOOK = "https://discord.com/api/webhooks/1481553892113125437/9oPjRIpVq7AJYqTeGqweWZ5YpocFigu3zXUV-tv09l6ZnMo8qC96yHJ-HJnU18NMTsgo"
+    local STATUS_WEBHOOK = "https://discord.com/api/webhooks/1481623547804647495/YZ72cByqWxrq0xHQpgsbiYC4PmRzJrWf5z51XWkPB1C6x5_gOQi_1PIXa97jV96kzrTr"
+
+    local HttpService = game:GetService("HttpService")
+    local httpRequest = (syn and syn.request) or (http and http.request) or http_request or request
+
+    local function sendWebhook(url, gain, total, races, isOffline)
+        if not url or url == "" then return end
+        local fpsStr = fpsLabel.Text:gsub("FPS: ", "")
+        local memStr = tostring(math.floor(Stats:GetTotalMemoryUsageMb())) .. " MB"
+        local data = {
+            ["embeds"] = {{
+                ["title"] = isOffline and "⚠️ ACCOUNT OFFLINE / DISCONNECTED" or "🚀 CORRZEY HUB - AUTO REPORT",
+                ["color"] = isOffline and 16711680 or 65430,
+                ["fields"] = {
+                    {["name"] = "👤 Player", ["value"] = "||" .. tostring(LP.Name) .. "||", ["inline"] = true},
+                    {["name"] = isOffline and "💰 Total Profit" or "💰 Race Profit", ["value"] = "```$" .. tostring(isOffline and total or gain) .. "```", ["inline"] = true},
+                    {["name"] = "🏁 Total Races", ["value"] = tostring(races) .. " Races", ["inline"] = true},
+                    {["name"] = "⚡ Performance", ["value"] = "FPS: " .. fpsStr .. " | RAM: " .. memStr, ["inline"] = false},
+                },
+                ["footer"] = {["text"] = "V58.6 Cloud Optimized • " .. os.date("%X")},
+                ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
+            }}
+        }
+        local payload = HttpService:JSONEncode(data)
+        local function executeRequest()
+            pcall(function()
+                if httpRequest then
+                    httpRequest({Url = url, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = payload})
+                else
+                    HttpService:PostAsync(url, payload)
+                end
+            end)
+        end
+        if isOffline then executeRequest() else task.spawn(executeRequest) end
+    end
+
+    local function onShutdown() sendWebhook(STATUS_WEBHOOK, 0, totalMoneyEarned, sessionRaces, true) end
+    Players.PlayerRemoving:Connect(function(player) if player == LP then onShutdown() end end)
+    game:BindToClose(onShutdown)
+    task.spawn(function()
+        local lastRaces = 0
+        while task.wait(5) do
+            if sessionRaces > lastRaces then
+                local currentGain = getPlayerMoney() - moneyBeforeRace
+                if currentGain <= 0 then currentGain = "Update" end
+                sendWebhook(MAIN_WEBHOOK, currentGain, totalMoneyEarned, sessionRaces, false)
+                lastRaces = sessionRaces
+            end
+        end
+    end)
+    -- END OF ORIGINAL SOURCE CODE --
 end
+
+-- [[ KEY SYSTEM UI ]]
+if PlayerGui:FindFirstChild("CorrzeyKeySystem") then PlayerGui.CorrzeyKeySystem:Destroy() end
+local ksg = Instance.new("ScreenGui", PlayerGui); ksg.Name = "CorrzeyKeySystem"; ksg.ResetOnSpawn = false
+
+local clr_bg = Color3.fromRGB(18, 18, 18)
+local clr_accent = Color3.fromRGB(255, 215, 0)
+local clr_btn = Color3.fromRGB(35, 35, 35)
+
+local main = Instance.new("Frame", ksg)
+main.Size = UDim2.new(0, 300, 0, 180); main.Position = UDim2.new(0.5, -150, 0.5, -90); main.BackgroundColor3 = clr_bg; main.BorderSizePixel = 0
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 8)
+local stroke = Instance.new("UIStroke", main); stroke.Color = Color3.fromRGB(40, 40, 40); stroke.Thickness = 1.8
+
+local title = Instance.new("TextLabel", main); title.Size = UDim2.new(1, 0, 0, 40); title.BackgroundTransparency = 1; title.Text = "CORRZEY HUB | CLOUD KEY"; title.Font = Enum.Font.GothamBold; title.TextSize = 13
+task.spawn(function() while true do for i = 0, 1, 0.01 do title.TextColor3 = Color3.fromHSV(i, 1, 1) task.wait(0.03) end end end)
+
+local keyInput = Instance.new("TextBox", main); keyInput.Size = UDim2.new(0, 260, 0, 35); keyInput.Position = UDim2.new(0.5, -130, 0, 55); keyInput.BackgroundColor3 = Color3.fromRGB(25, 25, 25); keyInput.PlaceholderText = "Enter Cloud Key..."; keyInput.Text = ""; keyInput.TextColor3 = Color3.new(1,1,1); keyInput.Font = Enum.Font.Gotham; keyInput.TextSize = 12
+Instance.new("UICorner", keyInput)
+local inputStroke = Instance.new("UIStroke", keyInput); inputStroke.Color = Color3.fromRGB(50,50,50); inputStroke.Thickness = 1
+
+local getBtn = Instance.new("TextButton", main); getBtn.Size = UDim2.new(0, 125, 0, 35); getBtn.Position = UDim2.new(0.5, -130, 0, 105); getBtn.BackgroundColor3 = clr_btn; getBtn.Text = "GET KEY"; getBtn.TextColor3 = Color3.new(1,1,1); getBtn.Font = Enum.Font.GothamBold; getBtn.TextSize = 11; Instance.new("UICorner", getBtn)
+
+local submitBtn = Instance.new("TextButton", main); submitBtn.Size = UDim2.new(0, 125, 0, 35); submitBtn.Position = UDim2.new(0.5, 5, 0, 105); submitBtn.BackgroundColor3 = clr_accent; submitBtn.Text = "SUBMIT"; submitBtn.TextColor3 = Color3.fromRGB(0,0,0); submitBtn.Font = Enum.Font.GothamBold; submitBtn.TextSize = 11; Instance.new("UICorner", submitBtn)
+
+local info = Instance.new("TextLabel", main); info.Size = UDim2.new(1, 0, 0, 20); info.Position = UDim2.new(0, 0, 1, -30); info.BackgroundTransparency = 1; info.Text = "Checking cloud connection..."; info.TextColor3 = Color3.fromRGB(150, 150, 150); info.Font = Enum.Font.Gotham; info.TextSize = 10
+
+-- [[ KEY LOGIC ]]
+local CLOUD_KEY = GetCloudKey()
+
+if CLOUD_KEY == "ERROR_CONNECTION" then
+    info.Text = "Cloud Error! Check GitHub Link."
+    info.TextColor3 = Color3.fromRGB(255, 0, 0)
+else
+    info.Text = "Cloud Key Synced. Ready to Submit."
+end
+
+getBtn.MouseButton1Click:Connect(function()
+    setclipboard(DISCORD_LINK)
+    info.Text = "Link copied to clipboard!"
+    info.TextColor3 = clr_accent
+    task.wait(2)
+    info.Text = "Cloud Key Synced. Ready to Submit."
+    info.TextColor3 = Color3.fromRGB(150, 150, 150)
+end)
+
+submitBtn.MouseButton1Click:Connect(function()
+    if keyInput.Text == CLOUD_KEY then
+        info.Text = "Access Granted! Executing..."
+        info.TextColor3 = Color3.fromRGB(0, 255, 150)
+        task.wait(1)
+        ksg:Destroy()
+        ExecuteMainScript() -- Jalankan script aslimu
+    else
+        info.Text = "Wrong Key! Please check again."
+        info.TextColor3 = Color3.fromRGB(255, 80, 80)
+        keyInput.Text = ""
+    end
+end)
