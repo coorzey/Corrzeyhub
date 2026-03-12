@@ -3,7 +3,7 @@
 -- INTEGRATED CLOUD KEY & UI SYSTEM
 -- ==========================================  
 
-local KeyURL = "LINK_RAW_GITHUB_KAMU" -- Masukkan link Raw GitHub di sini
+local KeyURL = "https://raw.githubusercontent.com/coorzey/Key/refs/heads/main/Key" -- Masukkan link Raw GitHub di sini
 local GetKeyLink = "LINK_DISCORD_KAMU" -- Masukkan link Discord/Grup di sini
 
 -- [ 1. CLOUD KEY LOGIC ]
