@@ -10,7 +10,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui")
 
 -- [[ KONFIGURASI CLOUD ]]
 local KEY_URL = "https://raw.githubusercontent.com/coorzey/Key/refs/heads/main/Key" 
-local DISCORD_LINK = "https://discord.gg/corrzeyhub" 
+local DISCORD_LINK = "https://link-target.net/4211698/2BJS5sHtRsHr" 
 
 -- Fungsi mengambil Key dari GitHub
 local function GetCloudKey()
